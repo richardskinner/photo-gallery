@@ -34,7 +34,7 @@ class ImageGalleryController extends Controller
         return back()->with('success', 'Image Uploaded successfully.');
     }
 
-    #[Route("/image-gallery/{id}", methods: ["DELETE"])]
+    #[Route("/api/image-gallery/{id}", methods: ["DELETE"])]
     public function destroy(int $id)
     {
         ImageGallery::find($id)->delete();
