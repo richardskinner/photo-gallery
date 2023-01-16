@@ -27,3 +27,4 @@ Uses a basic Vue component with a basic api route and standard laravel routes.
 * Rerender the component after image removed
   * This requires moving retrieval of images to Axios in Vue component
 * Improve test coverage
+* Move upload form to Vue component
