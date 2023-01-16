@@ -1,18 +1,14 @@
 <template>
   <div class="container mt-5">
     <div class="row justify-content-center">
-      <div class="col-md-8">
-        <ul class="list-unstyled list-inline">
-          <li class="list-inline-item" v-for="item in gallery">
-            <div class="card">
-              <img :src="item.image" class="card-img-top fluid" />
-              <div class="card-body">
-                <div class="card-title">{{ item.title }}-{{ item.id }}</div>
-                <button class="btn btn-danger" @click="removeImage(item.id)">Remove</button>
-              </div>
-            </div>
-          </li>
-        </ul>
+      <div class="col-md-3" v-for="item in gallery">
+        <div class="card mb-4">
+          <img :src="item.image" class="card-img-top fluid" />
+          <div class="card-body">
+            <div class="card-title">{{ item.title }}-{{ item.id }}</div>
+            <button class="btn btn-danger" @click="removeImage(item.id)">Remove</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>

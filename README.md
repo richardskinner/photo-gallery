@@ -19,3 +19,11 @@ Uses a basic Vue component with a basic api route and standard laravel routes.
 ### Start Server
 
 `docker-compose up -d --build`
+
+## Improvements
+
+* Add authentication
+* Pagination through Vue
+* Rerender the component after image removed
+  * This requires moving retrieval of images to Axios in Vue component
+* Improve test coverage
