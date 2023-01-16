@@ -18,5 +18,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('image-gallery', [ImageGalleryController::class, 'index']);
+Route::get('image-gallery', [ImageGalleryController::class, 'index'])->name('index');
 Route::post('image-gallery', [ImageGalleryController::class, 'upload'])->name('upload');

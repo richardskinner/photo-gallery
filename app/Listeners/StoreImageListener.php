@@ -4,7 +4,7 @@ namespace App\Listeners;
 
 use App\Events\StoreImageEvent;
 use App\Http\Services\ImageGalleryService;
-use App\Models\ImageGallery;
+use App\Models\Image;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 

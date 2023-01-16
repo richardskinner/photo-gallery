@@ -5,24 +5,25 @@ namespace App\Http\Controllers;
 use App\Events\StoreImageEvent;
 use App\Http\Requests\UploadRequest;
 use App\Http\Services\ImageGalleryService;
-use App\Models\ImageGallery;
+use App\Models\Image;
+use App\Models\Tag;
+use Illuminate\Http\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ImageGalleryController extends Controller
 {
-    private ImageGalleryService $imageGalleryService;
-
-    public function __construct(ImageGalleryService $imageGalleryService)
+    public function __construct(private ImageGalleryService $imageGalleryService)
     {
-        $this->imageGalleryService = $imageGalleryService;
     }
 
     #[Route("/image-gallery", methods: ["GET"])]
-    public function index()
+    public function index(Request $request)
     {
-        $images = $this->imageGalleryService->getPaginatedImages(20);
+        $tagId = $request->get('tag');
+        $images = $this->imageGalleryService->getPaginatedImages(20, $tagId);
+        $tags = Tag::all();
 
-        return view('image-gallery', compact('images'));
+        return view('image-gallery', compact('images', 'tags'));
     }
 
 
@@ -37,7 +38,7 @@ class ImageGalleryController extends Controller
     #[Route("/api/image-gallery/{id}", methods: ["DELETE"])]
     public function destroy(int $id)
     {
-        ImageGallery::find($id)->delete();
+        Image::find($id)->delete();
 
         return response()->json(['message' => 'ok'], 200);
     }

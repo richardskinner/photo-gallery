@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\ImageGallery;
+use App\Models\Image;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -15,12 +15,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-         User::factory(10)->create();
-        ImageGallery::factory(50)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        $this->call([
+            ImageTableSeeder::class
+        ]);
     }
 }

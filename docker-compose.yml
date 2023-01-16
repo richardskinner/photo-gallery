@@ -16,6 +16,9 @@ services:
     build: docker/php
     volumes:
       - ./:/code
+      - ./docker/php/xdebug.ini/:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+    environment:
+      - XDEBUG_HOST=host.docker.internal
     networks:
       - photo-gallery-network
   redis:
@@ -30,21 +33,17 @@ services:
       - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: photo-gallery
+      MYSQL_DATABASE: photo_gallery
       MYSQL_USER: root
       MYSQL_PASSWORD: password
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
     volumes:
       - ./docker/mysql:/docker-entrypoint-initdb.d
-      - dbdata:/var/lib/mysql
+      - ./docker/mysql/data:/var/lib/mysql
     networks:
       - photo-gallery-network
 
 networks:
   photo-gallery-network:
     driver: bridge
-
-volumes:
-  dbdata:
-    driver: local
