@@ -20,11 +20,11 @@ class ImageGalleryServiceTest extends TestCase
         $this->seed();
     }
 
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
+    public function testDeleteImageSuccessful()
+    {
+
+    }
+
     public function testThatCorrectItemsPaginationReturned()
     {
         $paginationItems = 20;

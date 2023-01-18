@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\DeleteImageEvent;
 use App\Events\StoreImageEvent;
 use App\Http\Requests\UploadRequest;
 use App\Http\Services\ImageGalleryService;
@@ -36,9 +37,9 @@ class ImageGalleryController extends Controller
     }
 
     #[Route("/api/image-gallery/{id}", methods: ["DELETE"])]
-    public function destroy(int $id)
+    public function destroy(Image $image)
     {
-        Image::find($id)->delete();
+        event(new DeleteImageEvent($image));
 
         return response()->json(['message' => 'ok'], 200);
     }

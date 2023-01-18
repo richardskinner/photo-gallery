@@ -22,13 +22,16 @@ return new class extends Migration
         Schema::create('image_tag', function (Blueprint $table) {
             $table->unsignedBigInteger('image_id');
             $table->unsignedBigInteger('tag_id');
+
             $table->foreign('image_id')
                 ->references('id')
-                ->on('image');
+                ->on('image')
+                ->onDelete('cascade');
 
             $table->foreign('tag_id')
                 ->references('id')
-                ->on('tags');
+                ->on('tags')
+                ->onDelete('cascade');
         });
     }
 

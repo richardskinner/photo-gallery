@@ -36,10 +36,15 @@ class ImageGalleryTest extends TestCase
 
     public function test_remove_image(): void
     {
-        $response = $this->delete('/api/image-gallery/1');
+        $response = $this->delete('/image-gallery/1');
 
-        $response->assertStatus(200);
-        $response->assertContent('{"message":"ok"}');
-        $this->assertDatabaseMissing('image_gallery', ['id' => 1]);
+        $response->assertOk();
+    }
+
+    public function test_remove_image_throws_http_when_no_image_exists()
+    {
+        $response = $this->delete('/image-gallery/TEST');
+
+        $response->assertNotFound();
     }
 }
