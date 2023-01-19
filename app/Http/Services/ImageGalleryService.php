@@ -9,6 +9,9 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class ImageGalleryService
 {
+    public function __construct(private ImageStorageService $imageStorageService)
+    {}
+
     public function getPaginatedImages(int $totalItems = 10, ?int $tagId = null): LengthAwarePaginator
     {
         return Image::whereHas('tags', function(Builder $query) use($tagId) {
@@ -19,13 +22,10 @@ class ImageGalleryService
         })->paginate($totalItems);
     }
 
-    public function storeUploadedImage(string $title, UploadedFile $uploadedFile): bool
+    public function createImageFromUpload(string $title, UploadedFile $uploadedFile): bool
     {
-        $input['image'] = time() . '.' . $uploadedFile->getClientOriginalExtension();
-        $uploadedFile->move(public_path('images'), $input['image']);
-
-        $input['title'] = $title;
-        Image::create($input);
+        $image = $this->imageStorageService->storeImage($uploadedFile);
+        Image::create(['title' => $title, 'image' => $image]);
 
         return true;
     }
