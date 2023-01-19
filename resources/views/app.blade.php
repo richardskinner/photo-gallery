@@ -19,6 +19,15 @@
 </head>
 <body>
     <div id="app">
+        <div class="header">
+            <a href="#default" class="logo">Photo Gallery</a>
+            <div class="header-right">
+                <a class="#" href="#home"><i class="bi bi-instagram"></i></a>
+                <a href="#"><i class="bi bi-facebook"></i></a>
+                <a href="#"><i class="bi bi-twitter"></i></a>
+                <a href="#"><i class="bi bi-tiktok"></i></a>
+            </div>
+        </div>
         @yield('content')
     </div>
 </body>
