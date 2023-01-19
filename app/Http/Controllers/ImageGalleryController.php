@@ -8,7 +8,9 @@ use App\Http\Requests\UploadRequest;
 use App\Http\Services\ImageGalleryService;
 use App\Models\Image;
 use App\Models\Tag;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ImageGalleryController extends Controller
@@ -36,11 +38,15 @@ class ImageGalleryController extends Controller
         return back()->with('success', 'Image Uploaded successfully.');
     }
 
-    #[Route("/api/image-gallery/{id}", methods: ["DELETE"])]
+    #[Route("/image-gallery/{id}", methods: ["DELETE"])]
     public function destroy(Image $image)
     {
-        event(new DeleteImageEvent($image));
-
-        return response()->json(['message' => 'ok'], 200);
+        try {
+            event(new DeleteImageEvent($image));
+            return back()->with('success', 'Image Deleted successfully.');
+        } catch (ModelNotFoundException $exception) {
+            Log::error('No image exists', ['exceptionMessage' => $exception->getMessage()]);
+            return back()->with('error', 'Image does not exist.');
+        }
     }
 }

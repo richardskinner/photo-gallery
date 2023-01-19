@@ -1,6 +1,12 @@
 @extends('app')
 
 @section('content')
+    @if($message = \Illuminate\Support\Facades\Session::get('error'))
+        <div class="alert alert-danger" role="alert">{{ $message }}</div>
+    @endif
+    @if($message = \Illuminate\Support\Facades\Session::get('success'))
+        <div class="alert alert-success" role="alert">{{ $message }}</div>
+    @endif
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-8 mb-2">
