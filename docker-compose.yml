@@ -1,0 +1,51 @@
+version: '3.9'
+services:
+  nginx:
+    image: nginx:latest
+    container_name: photo-gallery_srv
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/code
+      - ./docker/nginx/site.conf:/etc/nginx/conf.d/default.conf
+    links:
+      - php
+    networks:
+      - photo-gallery-network
+  php:
+    build: docker/php
+    volumes:
+      - ./:/code
+      - ./docker/php/xdebug.ini/:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+    environment:
+      - XDEBUG_HOST=host.docker.internal
+    ports:
+      - "5173:5173"
+    networks:
+      - photo-gallery-network
+  redis:
+    image: bitnami/redis:latest
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+  mysql:
+    image: mysql:8.0.20
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: photo_gallery
+      MYSQL_USER: root
+      MYSQL_PASSWORD: password
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - ./docker/mysql:/docker-entrypoint-initdb.d
+      - ./docker/mysql/data:/var/lib/mysql
+    networks:
+      - photo-gallery-network
+
+networks:
+  photo-gallery-network:
+    driver: bridge
