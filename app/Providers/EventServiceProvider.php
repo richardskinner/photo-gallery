@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Events\DeleteImageEvent;
 use App\Events\StoreImageEvent;
+use App\Listeners\DeleteImageListener;
 use App\Listeners\StoreImageListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -21,6 +23,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         StoreImageEvent::class => [
             StoreImageListener::class
+        ],
+        DeleteImageEvent::class => [
+            DeleteImageListener::class
         ],
     ];
 
