@@ -20,4 +20,4 @@ Route::get('/', function () {
 
 Route::get('image-gallery', [ImageGalleryController::class, 'index'])->name('index');
 Route::post('image-gallery', [ImageGalleryController::class, 'upload'])->name('upload');
-Route::delete('image-gallery/{image}', [ImageGalleryController::class, 'destroy']);
+Route::delete('image-gallery/{image}', [ImageGalleryController::class, 'destroy'])->name('delete');

@@ -22,13 +22,6 @@ export default {
       gallery: this.$attrs.images.data,
       csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content')
     }
-  },
-  methods: {
-    removeImage(id) {
-      if (confirm('Are you sure you want to remove image?')) {
-        window.axios.delete('image-gallery/' + id).then(response => response.status === 200 ? location.reload() : null)
-      }
-    }
-  },
+  }
 }
 </script>
