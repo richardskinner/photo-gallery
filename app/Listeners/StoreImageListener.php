@@ -30,6 +30,6 @@ class StoreImageListener
      */
     public function handle(StoreImageEvent $event)
     {
-        $this->imageGalleryService->storeUploadedImage($event->title, $event->uploadedFile);
+        $this->imageGalleryService->createImageFromUpload($event->title, $event->uploadedFile);
     }
 }
