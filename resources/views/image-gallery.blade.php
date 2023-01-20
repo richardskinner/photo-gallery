@@ -1,16 +1,23 @@
-@extends('app')
-
-@section('content')
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Gallery') }}
+        </h2>
+    </x-slot>
     @if($message = \Illuminate\Support\Facades\Session::get('error'))
         <div class="alert alert-danger" role="alert">{{ $message }}</div>
     @endif
     @if($message = \Illuminate\Support\Facades\Session::get('success'))
         <div class="alert alert-success" role="alert">{{ $message }}</div>
     @endif
+</x-app-layout>
+
+@section('content')
+
     <div class="container-fluid mt-5">
         <div class="row justify-content-center">
             <div class="col-md-8 mb-2">
-                <form action="{{ route('index') }}" method="get">
+                <form action="#" method="get">
                     <label class="form-label">
                         Select Tag:
                     </label>
@@ -25,7 +32,7 @@
         </div>
         <div class="row justify-content-center">
             <div class="col-md-8 mb-2">
-                <form action="{{ route('upload') }}" method="post" enctype="multipart/form-data">
+                <form action="#" method="post" enctype="multipart/form-data">
                     @csrf
                     <label class="form-label">
                         Select Image:
@@ -40,10 +47,10 @@
     <div class="container-fluid mt-5">
         <div class="row justify-content-center">
             @foreach($images as $image)
-                <form action="{{ route('delete', $image->id) }}" method="post">
-                    @csrf
-                    @method('delete')
-                    <div class="col-md-3">
+                <div class="col-md-3">
+                    <form action="#" method="post">
+                        @csrf
+                        @method('delete')
                         <div class="card mb-4">
                             <img alt="{{ $image->title }}" src="{{ $image->image }}" class="card-img-top fluid"/>
                             <div class="card-body">
@@ -51,8 +58,8 @@
                                 <button class="btn btn-danger">Remove</button>
                             </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             @endforeach
         </div>
     </div>
