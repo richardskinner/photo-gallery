@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Http\UploadedFile;
@@ -32,7 +33,7 @@ class ImageGalleryTest extends TestCase
 
     public function test_get_list_of_gallery_images(): void
     {
-        $response = $this->get('/image-gallery');
+        $response = $this->actingAs(new User())->get('/gallery?tag=9');
 
         $response->assertStatus(200);
     }
@@ -40,12 +41,13 @@ class ImageGalleryTest extends TestCase
     public function test_stores_image_in_local_storage_correctly()
     {
         Carbon::setTestNow();
-        $url = route('index');
+        $url = route('gallery.store');
         $imagePath = Carbon::now()->unix() .'.jpg';
 
         Storage::fake('local');
 
-        $response = $this->from($url)
+        $response = $this->actingAs(new User())
+            ->from($url)
             ->post(
                 $url,
                 [

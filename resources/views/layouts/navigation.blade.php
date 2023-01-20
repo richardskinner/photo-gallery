@@ -18,6 +18,17 @@
                 </div>
             </div>
 
+            <div class="hidden sm:flex sm:items-center sm:ml-6">
+                <form action="{{ route('gallery.index') }}" method="get" class="input-group">
+                    <select class="form-select" name="tag">
+                        @foreach($tags as $tag)
+                            <option value="{{ $tag->id }}">{{ $tag->tag }}</option>
+                        @endforeach
+                    </select>
+                    <button class="btn btn-primary">Search By Tag</button>
+                </form>
+            </div>
+
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ml-6">
                 <x-dropdown align="right" width="48">

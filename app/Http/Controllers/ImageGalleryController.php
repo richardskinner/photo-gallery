@@ -19,19 +19,21 @@ class ImageGalleryController extends Controller
     {
     }
 
-    #[Route("/image-gallery", methods: ["GET"])]
+    #[Route("/gallery", methods: ["GET"])]
     public function index(Request $request)
     {
-        $tagId = $request->get('tag');
-        $images = $this->imageGalleryService->getPaginatedImages(20, $tagId);
+        $requestTagId = $request->get('tag');
+        $images = $this->imageGalleryService->getPaginatedImages(20, $requestTagId);
         $tags = Tag::all();
+        $tag = $tags->filter(function ($tagValue, $tagId) use ($requestTagId) {
+            return (int)$requestTagId === $tagId;
+        })->first();
 
-        return view('image-gallery', compact('images', 'tags'));
+        return view('gallery.index', compact('images', 'tags', 'tag'));
     }
 
-
-    #[Route("/image-gallery", methods: ["POST"])]
-    public function upload(UploadRequest $request)
+    #[Route("/gallery/store", methods: ["POST"])]
+    public function store(UploadRequest $request)
     {
         event(new StoreImageEvent($request->title, $request->image));
 

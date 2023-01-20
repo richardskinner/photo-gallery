@@ -2,16 +2,17 @@
 
 namespace App\View\Components;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\View\Component;
 use Illuminate\View\View;
 
 class AppLayout extends Component
 {
-    /**
-     * Get the view / contents that represents the component.
-     */
+    public function __construct(private Collection $tags)
+    {}
+
     public function render(): View
     {
-        return view('layouts.app');
+        return view('layouts.app', ['tags' => $this->tags]);
     }
 }
