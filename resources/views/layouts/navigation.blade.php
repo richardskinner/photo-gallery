@@ -21,6 +21,7 @@
             <div class="hidden sm:flex sm:items-center sm:ml-6">
                 <form action="{{ route('gallery.index') }}" method="get" class="input-group">
                     <select class="form-select" name="tag">
+                        <option disabled selected>Select a tag</option>
                         @foreach($tags as $tag)
                             <option value="{{ $tag->id }}">{{ $tag->tag }}</option>
                         @endforeach
