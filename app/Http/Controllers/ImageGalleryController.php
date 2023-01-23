@@ -10,6 +10,7 @@ use App\Models\Image;
 use App\Models\Tag;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -30,6 +31,17 @@ class ImageGalleryController extends Controller
         })->first();
 
         return view('gallery.index', compact('images', 'tags', 'tag'));
+    }
+
+    public function create(Request $request)
+    {
+        $requestTagId = $request->get('tag');
+        $tags = Tag::all();
+        $tag = $tags->filter(function ($tagValue, $tagId) use ($requestTagId) {
+            return (int)$requestTagId === $tagId;
+        })->first();
+
+        return view('gallery.create', compact('tags', 'tag'));
     }
 
     #[Route("/gallery/store", methods: ["POST"])]
