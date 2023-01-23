@@ -23,10 +23,6 @@ services:
       - "5173:5173"
     networks:
       - photo-gallery-network
-  redis:
-    image: bitnami/redis:latest
-    environment:
-      - ALLOW_EMPTY_PASSWORD=yes
   mysql:
     image: mysql:8.0.20
     restart: unless-stopped
@@ -45,6 +41,27 @@ services:
       - ./docker/mysql/data:/var/lib/mysql
     networks:
       - photo-gallery-network
+  redis:
+    image: bitnami/redis:latest
+    volumes:
+      - ./data/redis:/data
+    ports:
+      - "8002:6379"
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    networks:
+      - photo-gallery-network
+  smtp:
+    platform: linux/x86_64
+    image: mailhog/mailhog
+    logging:
+      driver: 'none'
+    ports:
+      - "8003:1025"
+      - "8100:8025"
+    networks:
+      - photo-gallery-network
+
 
 networks:
   photo-gallery-network:

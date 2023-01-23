@@ -22,11 +22,10 @@ class ImageGalleryService
         })->paginate($totalItems);
     }
 
-    public function createImageFromUpload(string $title, UploadedFile $uploadedFile): bool
+    public function createImageFromUpload(string $title, UploadedFile $uploadedFile): Image
     {
         $image = $this->imageStorageService->storeImage($uploadedFile);
-        Image::create(['title' => $title, 'image' => $image]);
 
-        return true;
+        return Image::create(['title' => $title, 'image' => $image]);
     }
 }
