@@ -3,11 +3,11 @@
 namespace App\Http\Services;
 
 use Carbon\Carbon;
+use http\Exception\RuntimeException;
 use Illuminate\Http\UploadedFile;
 
 class ImageStorageService
 {
-    private const FULL_STORAGE_PATH = 'app/public';
     private const FILE_STORAGE_DIR = 'public';
     private const DISK = 'local';
 
@@ -15,9 +15,12 @@ class ImageStorageService
     {
         $date = Carbon::now();
         $imageName = $date->unix() . '.' . $uploadedFile->getClientOriginalExtension();
-        $imagePath =  storage_path(self::FULL_STORAGE_PATH) . $imageName;
-        $uploadedFile->storeAs(self::FILE_STORAGE_DIR, $imageName, ['disk' => self::DISK]);
+        $storedImagePath = $uploadedFile->storeAs(self::FILE_STORAGE_DIR, $imageName, ['disk' => self::DISK]);
 
-        return $imagePath;
+        if ($storedImagePath === false) {
+            throw new RuntimeException('Image not stored');
+        }
+
+        return $storedImagePath;
     }
 }

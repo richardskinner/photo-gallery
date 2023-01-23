@@ -2,16 +2,20 @@
 
 namespace Tests\Feature;
 
+use App\Jobs\ImageUploadNotificationEmail;
+use App\Mail\ImageUploadStoredEmail;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class ImageGalleryTest extends TestCase
 {
-    use DatabaseMigrations;
+    use DatabaseMigrations, RefreshDatabase;
 
     public function setUp(): void
     {
@@ -44,15 +48,19 @@ class ImageGalleryTest extends TestCase
         $url = route('gallery.store');
         $imagePath = Carbon::now()->unix() .'.jpg';
 
+        Mail::fake();
         Storage::fake('local');
 
-        $response = $this->actingAs(new User())
+        $user = User::find(1);
+
+        $response = $this->actingAs($user)
             ->from($url)
             ->post(
                 $url,
                 [
                     'title' => 'Avatar',
-                    'image' => UploadedFile::fake()->image($imagePath)
+                    'image' => UploadedFile::fake()->image($imagePath),
+                    'csrf' => csrf_token()
                 ]
             );
 
@@ -60,6 +68,7 @@ class ImageGalleryTest extends TestCase
         $response->assertRedirect($url);
 
         Storage::disk('local')->assertExists('public/' . $imagePath);
+        Mail::assertSent(ImageUploadStoredEmail::class);
     }
 
     public function test_remove_image(): void

@@ -4,9 +4,8 @@ namespace App\Listeners;
 
 use App\Events\StoreImageEvent;
 use App\Http\Services\ImageGalleryService;
-use App\Models\Image;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
+use App\Jobs\ImageUploadNotificationEmail;
+use Illuminate\Support\Facades\Auth;
 
 class StoreImageListener
 {
@@ -31,5 +30,6 @@ class StoreImageListener
     public function handle(StoreImageEvent $event)
     {
         $this->imageGalleryService->createImageFromUpload($event->title, $event->uploadedFile);
+        ImageUploadNotificationEmail::dispatch(Auth::user());
     }
 }
